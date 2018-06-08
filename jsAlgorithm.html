@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 从第一个元素开始，依次和后面的N-1个元素比较，找到最小(大)的放到第一个位置
+        // 剩下的数据从重复第一个步骤，之后所有的数据按照顺序排列、
+        function selectionSort(array) {
+            var length = array.length,
+            i,
+            j,
+            minIndex,
+            minValue,
+            temp;
+            for(i = 0; i< length -1; i++){
+                minIndex = i;
+                minValue = array[minIndex];
+                for(j = i+1; j < length; j++){
+                    if (minValue > array[j]){
+                        minIndex = j;
+                        minValue = array[j];
+                    }
+                }
+                if(minValue != array[i]){
+                    tmp = array[i];
+                    array[i] = minValue;
+                    array[minIndex] = tmp;
+                }
+            }
+            return array;
+        }
+       /**
+        * 从 index 开始检查并保持最大堆性质
+        *
+        * @array  Zero-Based数组，下标从0开始
+        *  
+        * @index 检查的起始下标
+        *
+        * @heapSize 堆大小
+        *
+        **/
+        function maxHeapify(array, index, heapSize){
+            var iMax = index,
+            iLeft = 2 * index + 1,
+            iRight = 2 * (index + 1);
+            if(iLeft < heapSize && array[index] < array[iLeft]){
+                iMax = iLeft;
+            }
+            if(iRight < heapSize && array[iMax] < array[iRight]){
+                iMax = iRight;
+            }
+            if(iMax != index) {
+                swap(array,iMax,index);
+                maxHeapify(array,iMax,heapSize);
+            }
+        }
+
+        function swap(array, i, j){
+            var tmp = array[i];
+            array[i] = array[j];
+            array[j] = tmp;
+        }
+
+        function buildMaxHeap(array){
+            var i,
+            iParent = Math.floor((array.length - 1)/2)
+            for(var i = iParent; i >= 0; i--){
+                maxHeapify(array,i,array.length);
+            }
+        }
+        function heapSort(array){
+            buildMaxHeap(array);
+            console.log(array)
+
+            for(var i = array.length - 1; i > 0; i--){
+                swap(array,0,i)
+                maxHeapify(array,0,i)
+            }
+            return array
+        }
+
+        let array = [8, 5, 2, 6, 9, 3, 1, 4, 0, 7]
+        
+        console.log(heapSort(array))
+        // console.log(selectionSort([8, 5, 2, 6, 9, 3, 1, 4, 0, 7]))
+    </script>
+</body>
+</html>
